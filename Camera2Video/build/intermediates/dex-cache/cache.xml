@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\cfa62a0b2c43a2f1b26ea1672855bdb9f894d81a\output\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3af8cc51ef7088e56f132780da8c0bd858b6a6ad">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_40fa29d90c42a10d48557699c105ed93b4763eec.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\8e346e0cb80585ac7bc0d676078c76761984cfba\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="26c6eef571592c91f29e56fda0bac73321de0c92">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_36357839a4162b0d0b1f375a4bc25aeccdaabd6b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\74366d035b7ef2438fd15bd738a502bb407d96f6\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9abf11d546d9e0ee82da86df608ced7a961b76ac">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_10cb2026268e896e9a118288b5e60463c6772510.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\1286637b16e05f3ae442c41fb5b9d021ccc5ea97\output\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c5b7145fb34779b6639147b8f2f8dd77c0db771b">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_0bacab6c6bbf4db84e81d8dceecdafce0dcb9299.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\06bdefaebf7c00175e3378448eeff840d10666d1\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1108575c7dc7b7f5b378b3290ac90de81a9b8830">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_1ed7fd95742774916a5e1063f4d630921a2438e3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\1286637b16e05f3ae442c41fb5b9d021ccc5ea97\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="00d4c8eebf2b681073c72a26bd0849549e51c7cb">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_3fb7abb7e231b616d63bff6bd323c25c2c543ad0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\08473ed00afee7f7ed4bb3757be4e97132dffbe5\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_ee1380e760bc0cbedad46d5c01798f094ea4d621.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\180ed69a4ace2948474a9bfa9fe73aed8b9688d0\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b24e1c688744078e1fa833ffadf696794761bbe5">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_e27e59c59db7f8de94be40c72152bd53ef203b80.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.1\support-annotations-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a09194311f8f89c3e6db09d79f50897a889d615e">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\support-annotations-25.0.1_73d2b11873d9d57964212f426fc77f4b0286489d.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_5868aaa5230aaf5e271d4e3d0762690e896dc384\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\16ef359b09f6ce23fba1b28369cc52812fc0a83e\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6a1479afe9f1b3645e1cd9a87318976893472818">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_2a53f14949ace8b60057379c61b7ba647eaeef27.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\74366d035b7ef2438fd15bd738a502bb407d96f6\output\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="cfb91ea7c6890336890ccb42767041af6b863e32">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_7bc7fd278144989dcc3eb1a14c74b3274f6879d9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\97b1f845fac7f98deaf88f4249d152d975959037\output\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_b30b957be203ef4a50530fbd9e1e2d5ef66d0ae8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\97b1f845fac7f98deaf88f4249d152d975959037\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="bc7e99e8d0fc279a05aa91378530f467ad62d443">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_6036432521eb608b42fa5235a2fb3ca9534a17f8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\8e346e0cb80585ac7bc0d676078c76761984cfba\output\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c0bd6ffb002a85b5e7cad29f8558d1cc59539679">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_17e1c90445906032b21b792ad07f63b85fdd4034.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\cfa62a0b2c43a2f1b26ea1672855bdb9f894d81a\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="51eba4a4dd73044f90a9d58dd7ca34adbebfcf4e">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_38402900f8242b531669137efec658eceedd21b6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\16ef359b09f6ce23fba1b28369cc52812fc0a83e\output\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f83b00041ecfba705603fec40363416c7de69719">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_352c8b3b261fd85a2ad81a3b55c8700994152085.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\06ddaefaac813c4c73d241c8311c74b5801db3db\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="772bed2d992b67b9d0327f766cc95cd63031dcd3">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_13d0670037733854b0c9d23aa620cdf30f2ff577.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Daniela\.android\build-cache\98857f47fa575f151bda0e184d15a98fa2c29c1d\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f7ac4b327fdb9e2ee386f5adc46164927658de4b">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_25241fe89a440c2a90c3e4e19c16f7f7c69cd069.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ec646882abf3bc2d15d4c2c453ee17a6a89fd23f">
+        <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_6969aa931eb16fc66669664df7ffd59232512706\classes.dex" />
+    </item>
+
+</items>
