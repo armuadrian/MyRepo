@@ -1,5 +1,13 @@
 [
     {
+        "merged": "C:\\Users\\Daniela\\Documents\\GitHub\\MyRepo\\Camera2Video\\Application\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_launcher.png",
+        "source": "C:\\Users\\Daniela\\Documents\\GitHub\\MyRepo\\Camera2Video\\Application\\src\\main\\res\\drawable-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Daniela\\Documents\\GitHub\\MyRepo\\Camera2Video\\Application\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_action_info.png",
+        "source": "C:\\Users\\Daniela\\Documents\\GitHub\\MyRepo\\Camera2Video\\Application\\src\\main\\res\\drawable-mdpi\\ic_action_info.png"
+    },
+    {
         "merged": "C:\\Users\\Daniela\\Desktop\\samples\\Camera2Video\\Application\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_action_info.png",
         "source": "C:\\Users\\Daniela\\Desktop\\samples\\Camera2Video\\Application\\src\\main\\res\\drawable-mdpi\\ic_action_info.png"
     },
