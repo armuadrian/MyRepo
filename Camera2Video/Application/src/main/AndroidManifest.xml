@@ -21,9 +21,7 @@
 
     <!-- Min/target SDK versions (<uses-sdk>) managed by build.gradle -->
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
     <application android:allowBackup="true"
         android:label="@string/app_name"
@@ -32,7 +30,8 @@
         android:debuggable="true"
 
         <activity android:name=".CameraActivity"
-                  android:label="@string/app_name">
+                  android:label="@string/app_name"
+                  android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -40,5 +39,17 @@
         </activity>
 
     </application>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature android:name="android.hardware.location.gps" />
 
 </manifest>
