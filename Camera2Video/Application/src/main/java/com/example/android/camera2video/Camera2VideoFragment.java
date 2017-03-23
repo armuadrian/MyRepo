@@ -55,6 +55,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -106,6 +107,7 @@ public class Camera2VideoFragment extends Fragment
      * Button to record video
      */
     private FloatingActionButton mButtonVideo;
+    private TextView status;
 
     /**
      * A refernce to the opened {@link android.hardware.camera2.CameraDevice}.
@@ -295,7 +297,9 @@ public class Camera2VideoFragment extends Fragment
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
         mButtonVideo = (FloatingActionButton) view.findViewById(R.id.video);
-       // mButtonVideo.setOnClickListener(this);
+        status = (TextView) view.findViewById(R.id.statusMsg);
+        status.setText(R.string.record);
+        mButtonVideo.setOnClickListener(this);
         //view.findViewById(R.id.info).setOnClickListener(this);
     }
 
@@ -662,7 +666,7 @@ public class Camera2VideoFragment extends Fragment
                         @Override
                         public void run() {
                             // UI
-                            //mButtonVideo.setText(R.string.stop);
+                            status.setText(R.string.stop);
                             mIsRecordingVideo = true;
 
                             // Start recording
@@ -701,7 +705,7 @@ public class Camera2VideoFragment extends Fragment
     private void stopRecordingVideo() {
         // UI
         mIsRecordingVideo = false;
-        //mButtonVideo.setText(R.string.record);
+        status.setText(R.string.record);
         // Stop recording
         mMediaRecorder.stop();
         mMediaRecorder.reset();
