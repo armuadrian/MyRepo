@@ -29,6 +29,15 @@
         <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_10cb2026268e896e9a118288b5e60463c6772510.jar" />
     </item>
     <item
+        is-multidex="true"
+        jar="C:\Users\Daniela\Documents\GitHub\MyRepo\Camera2Video\Application\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="da54b0cfbff1c25d6c963f9ba40eca583ed55a9f">
+        <dex dex="C:\Users\Daniela\Documents\GitHub\MyRepo\Camera2Video\Application\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_9480830ea3437e3b45322ce1cb1ae00ce5e92ed1\classes.dex" />
+    </item>
+    <item
         is-multidex="false"
         jar="C:\Users\Daniela\.android\build-cache\1286637b16e05f3ae442c41fb5b9d021ccc5ea97\output\jars\libs\internal_impl-25.0.1.jar"
         jumboMode="false"
@@ -99,6 +108,15 @@
         revision="25.0.2"
         sha1="6a1479afe9f1b3645e1cd9a87318976893472818">
         <dex dex="C:\Users\Daniela\Desktop\samples\Camera2Video\Application\build\intermediates\pre-dexed\debug\classes_2a53f14949ace8b60057379c61b7ba647eaeef27.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Daniela\Documents\GitHub\MyRepo\Camera2Video\Application\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="C:\Users\Daniela\Documents\GitHub\MyRepo\Camera2Video\Application\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_e9396cbaa3e83539e30da8a594b3a23d01726ed1\classes.dex" />
     </item>
     <item
         is-multidex="false"

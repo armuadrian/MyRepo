@@ -1,7 +1,4 @@
-#Wed Mar 22 11:01:49 EET 2017
-base.0=C\:\\Users\\Daniela\\Desktop\\samples\\Camera2Video\\Application\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_6969aa931eb16fc66669664df7ffd59232512706
-renamed.1=classes.dex
-renamed.0=classes2.dex
-file.1=C\:\\Users\\Daniela\\Desktop\\samples\\Camera2Video\\Application\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_5868aaa5230aaf5e271d4e3d0762690e896dc384\\classes.dex
-base.1=C\:\\Users\\Daniela\\Desktop\\samples\\Camera2Video\\Application\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_5868aaa5230aaf5e271d4e3d0762690e896dc384
-file.0=C\:\\Users\\Daniela\\Desktop\\samples\\Camera2Video\\Application\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_6969aa931eb16fc66669664df7ffd59232512706\\classes.dex
+#Thu Mar 23 18:14:43 EET 2017
+base.0=C\:\\Users\\Daniela\\Documents\\GitHub\\MyRepo\\Camera2Video\\Application\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
+renamed.0=classes.dex
+file.0=C\:\\Users\\Daniela\\Documents\\GitHub\\MyRepo\\Camera2Video\\Application\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex
