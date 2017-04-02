@@ -298,7 +298,7 @@ public class Camera2VideoFragment extends Fragment
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
         mButtonVideo = (FloatingActionButton) view.findViewById(R.id.video);
         status = (TextView) view.findViewById(R.id.statusMsg);
-        status.setText(R.string.record);
+        status.setText(R.string.standby);
         mButtonVideo.setOnClickListener(this);
         //view.findViewById(R.id.info).setOnClickListener(this);
     }
@@ -666,7 +666,7 @@ public class Camera2VideoFragment extends Fragment
                         @Override
                         public void run() {
                             // UI
-                            status.setText(R.string.stop);
+                            status.setText(R.string.recording);
                             mIsRecordingVideo = true;
 
                             // Start recording
@@ -705,7 +705,7 @@ public class Camera2VideoFragment extends Fragment
     private void stopRecordingVideo() {
         // UI
         mIsRecordingVideo = false;
-        status.setText(R.string.record);
+        status.setText(R.string.standby);
         // Stop recording
         mMediaRecorder.stop();
         mMediaRecorder.reset();
