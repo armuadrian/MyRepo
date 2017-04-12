@@ -4,6 +4,7 @@ package com.example.android.camera2video;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -18,6 +19,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.List;
@@ -34,6 +36,9 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends PreferenceActivity {
+
+    private final String TAG = "DEBUG";
+
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -122,6 +127,14 @@ public class SettingsActivity extends PreferenceActivity {
         setupActionBar();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String syncConnPref = sharedPref.getString("example_text", "");
+        ConfigurationFile.addValue(ConfigurationFile.AUTO_START, sharedPref.getBoolean("example_switch", false) + "");
+    }
+
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
@@ -167,6 +180,8 @@ public class SettingsActivity extends PreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
+
+        private final String TAG = "DEBUG";
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -182,13 +197,21 @@ public class SettingsActivity extends PreferenceActivity {
         }
 
         @Override
+        public void onResume() {
+            super.onResume();
+
+        }
+
+        @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
+
             if (id == android.R.id.home) {
                 Model.isAutoStartEnabled = true;
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return true;
             }
+
             return super.onOptionsItemSelected(item);
         }
     }

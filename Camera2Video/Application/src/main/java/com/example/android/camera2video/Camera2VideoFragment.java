@@ -39,6 +39,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
@@ -58,6 +59,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,9 +77,10 @@ public class Camera2VideoFragment extends Fragment
     private static final SparseIntArray DEFAULT_ORIENTATIONS = new SparseIntArray();
     private static final SparseIntArray INVERSE_ORIENTATIONS = new SparseIntArray();
 
-    private static final String TAG = "Camera2VideoFragment";
+    private static final String TAG = "DEBUG";
     private static final int REQUEST_VIDEO_PERMISSIONS = 1;
     private static final String FRAGMENT_DIALOG = "dialog";
+    private boolean firstRecord = true;
 
     private static final String[] VIDEO_PERMISSIONS = {
             Manifest.permission.CAMERA,
@@ -198,6 +201,10 @@ public class Camera2VideoFragment extends Fragment
             if (null != mTextureView) {
                 configureTransform(mTextureView.getWidth(), mTextureView.getHeight());
             }
+            if(ConfigurationFile.getValue(ConfigurationFile.AUTO_START).equals("true") && firstRecord){
+                mIsRecordingVideo = true;
+                startRecordingVideo();
+            }
         }
 
         @Override
@@ -300,6 +307,8 @@ public class Camera2VideoFragment extends Fragment
         status = (TextView) view.findViewById(R.id.statusMsg);
         status.setText(R.string.standby);
         mButtonVideo.setOnClickListener(this);
+
+
         //view.findViewById(R.id.info).setOnClickListener(this);
     }
 
@@ -307,6 +316,8 @@ public class Camera2VideoFragment extends Fragment
     public void onResume() {
         super.onResume();
         startBackgroundThread();
+//        String pref = ConfigurationFile.readConfig("example_switch");
+//        Log.d(TAG, "Pref " + pref);
         if (mTextureView.isAvailable()) {
             openCamera(mTextureView.getWidth(), mTextureView.getHeight());
         } else {
@@ -325,6 +336,7 @@ public class Camera2VideoFragment extends Fragment
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.video: {
+                firstRecord = false;
                 if (mIsRecordingVideo) {
                     stopRecordingVideo();
                 } else {
@@ -627,7 +639,16 @@ public class Camera2VideoFragment extends Fragment
     }
 
     private String getVideoFilePath(Context context) {
-        return context.getExternalFilesDir(null).getAbsolutePath() + "/"
+
+        // Get the directory for the user's public pictures directory.
+//        File file = new File(Environment.getExternalStoragePublicDirectory(
+//                Environment.DIRECTORY_PICTURES), "PIC");
+//        Log.d(TAG, file.getAbsolutePath());
+//        if (!file.mkdirs()) {
+//            Log.d(TAG, "Directory not created");
+//        }
+
+        return context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/"
                 + System.currentTimeMillis() + ".mp4";
     }
 
@@ -684,9 +705,9 @@ public class Camera2VideoFragment extends Fragment
                 }
             }, mBackgroundHandler);
         } catch (CameraAccessException e) {
-            e.printStackTrace();
+            Log.d(TAG, e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(TAG, e.getMessage());
         }
 
     }
