@@ -647,9 +647,11 @@ public class Camera2VideoFragment extends Fragment
 //        if (!file.mkdirs()) {
 //            Log.d(TAG, "Directory not created");
 //        }
-
-        return context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/"
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/MyApp/"
                 + System.currentTimeMillis() + ".mp4";
+        Log.d(TAG, path);
+
+        return path;
     }
 
     private void startRecordingVideo() {
