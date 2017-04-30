@@ -51,6 +51,12 @@ public class ConfigurationFile {
     }
 
     public static String getValue(String key) {
-        return map.get(key);
+
+        String value = map.get(key);
+        if(value == null){
+            return "";
+        }
+
+        return value;
     }
 }
