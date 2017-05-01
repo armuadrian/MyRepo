@@ -50,8 +50,8 @@ public class CameraActivity extends AppCompatActivity {
         ConfigurationFile.init(this);
 
         setContentView(R.layout.activity_camera);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.camera_preview, Camera2VideoFragment.newInstance())

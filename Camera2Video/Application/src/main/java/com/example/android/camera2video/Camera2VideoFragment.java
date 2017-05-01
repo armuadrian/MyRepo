@@ -24,6 +24,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
@@ -123,6 +124,7 @@ public class Camera2VideoFragment extends Fragment
      * Button to record video
      */
     private FloatingActionButton mButtonVideo;
+    private FloatingActionButton menuButton;
     private TextView status;
 
     /**
@@ -248,6 +250,11 @@ public class Camera2VideoFragment extends Fragment
             mCameraOpenCloseLock.release();
             if (null != mTextureView) {
                 configureTransform(mTextureView.getWidth(), mTextureView.getHeight());
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
             if(ConfigurationFile.getValue(ConfigurationFile.AUTO_START).equals("true") && firstRecord){
                 mIsRecordingVideo = true;
@@ -384,7 +391,8 @@ public class Camera2VideoFragment extends Fragment
         recordingTime = (TextView) view.findViewById(R.id.recordingTime);
         status.setText(R.string.standby);
         mButtonVideo.setOnClickListener(this);
-
+        menuButton = (FloatingActionButton) view.findViewById(R.id.menu);
+        menuButton.setOnClickListener(this);
         mRenderer = new Renderer();
         mRenderer.start();
 
@@ -589,9 +597,6 @@ public class Camera2VideoFragment extends Fragment
         startBackgroundThread();
         if (mTextureView.isAvailable()) {
             openCamera(mTextureView.getWidth(), mTextureView.getHeight());
-
-
-
         } else {
            // mTextureView.setSurfaceTextureListener(mRenderer);
             mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
@@ -630,6 +635,19 @@ public class Camera2VideoFragment extends Fragment
                             .setMessage(R.string.intro_message)
                             .setPositiveButton(android.R.string.ok, null)
                             .show();
+                }
+                break;
+            }
+            case R.id.menu: {
+                Activity activity = getActivity();
+                if (null != activity) {
+                    if (mIsRecordingVideo) {
+                        stopRecordingVideo();
+                    }
+
+                    Intent intent = new Intent(activity, SettingsActivity.class);
+                    startActivity(intent);
+                    activity.finish();
                 }
                 break;
             }
@@ -744,10 +762,10 @@ public class Camera2VideoFragment extends Fragment
                     .get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             mSensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
             mVideoSize = chooseVideoSize(map.getOutputSizes(MediaRecorder.class));
-            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), width, height, mVideoSize);
+            //mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), width, height, mVideoSize);
 
             //mVideoSize = new Size(width, height);
-           // mPreviewSize = new Size(width, height);
+            mPreviewSize = new Size(width, height);
 
             int orientation = getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -900,7 +918,7 @@ public class Camera2VideoFragment extends Fragment
 
     private void setUpMediaRecorder() throws IOException {
         final Activity activity = getActivity();
-        if (null == activity) {
+        if (null == activity || mMediaRecorder == null) {
             return;
         }
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -916,7 +934,7 @@ public class Camera2VideoFragment extends Fragment
         String value = ConfigurationFile.getValue(ConfigurationFile.MAX_DURATION);
         switch (value){
             case "1": {
-                mMediaRecorder.setMaxDuration(1000 * 5);
+                mMediaRecorder.setMaxDuration(1000 * 5 * 60);
             }break;
             case "2": {
                 mMediaRecorder.setMaxDuration(1000 * 60 * 10);
@@ -1037,7 +1055,6 @@ public class Camera2VideoFragment extends Fragment
                             startHTime = SystemClock.uptimeMillis();
                             customHandler.postDelayed(updateTimerThread, 0);
 
-                            //timeThread.start();
 
                         }
                     });
@@ -1077,7 +1094,7 @@ public class Camera2VideoFragment extends Fragment
         // Stop recording
         mMediaRecorder.stop();
         mMediaRecorder.reset();
-        timeSwapBuff += timeInMilliseconds;
+        //timeSwapBuff += timeInMilliseconds;
         customHandler.removeCallbacks(updateTimerThread);
         recordingTime.setText("00:00");
 

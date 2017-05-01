@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:screenOrientation="landscape">
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -12,8 +13,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_below="@id/texture"
-        android:layout_toRightOf="@id/texture"
         android:background="#4285f4"
         android:orientation="horizontal">
 
@@ -33,18 +32,13 @@
             android:layout_margin="@dimen/fab_margin"
             app:srcCompat="@android:drawable/ic_dialog_email"/>
 
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_below="@id/texture"
-        android:layout_toRightOf="@id/texture"
-        android:background="#4285f4"
-        android:orientation="horizontal">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@android:drawable/ic_menu_manage" />
 
         <TextView
             android:id="@+id/status"
@@ -52,7 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|top"
             android:contentDescription="@string/description_info"
-            android:paddingTop="80dp"
+            android:textColor="@color/cardview_light_background"
+            android:paddingTop="10dp"
             android:paddingLeft="10dp"
             android:text="Recording Status :"
             android:visibility="visible" />
@@ -61,10 +56,11 @@
             android:id="@+id/statusMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|top"
+            android:layout_gravity="left|top"
             android:contentDescription="@string/description_info"
-            android:paddingTop="80dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="150dp"
+            android:paddingTop="10dp"
+            android:textColor="@color/cardview_light_background"
             android:text="Standby"
             android:textStyle="bold"
             android:visibility="visible" />
@@ -76,7 +72,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|top"
             android:contentDescription="@string/description_info"
-            android:paddingTop="100dp"
+            android:textColor="@color/cardview_light_background"
+            android:paddingTop="30dp"
             android:paddingLeft="10dp"
             android:text="Recording Time :"
             android:visibility="visible" />
@@ -85,18 +82,16 @@
             android:id="@+id/recordingTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|top"
+            android:layout_gravity="left|top"
             android:contentDescription="@string/description_info"
-            android:paddingTop="100dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="150dp"
+            android:paddingTop="30dp"
             android:text="00:00"
+            android:textColor="@color/cardview_light_background"
             android:textStyle="bold"
             android:visibility="visible" />
 
 
-
     </FrameLayout>
-
-
 
 </LinearLayout>
