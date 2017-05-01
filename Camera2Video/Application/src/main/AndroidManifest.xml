@@ -47,9 +47,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".VibrateIntro"
+        <activity android:name=".Intro"
             android:label="@string/vibrate_intro_label"
             android:theme="@style/AppThemeNoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.INTRO" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <activity

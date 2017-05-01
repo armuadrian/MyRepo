@@ -16,28 +16,14 @@
 
 package com.example.android.camera2video;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Properties;
 
 public class CameraActivity extends AppCompatActivity {
 
@@ -60,16 +46,18 @@ public class CameraActivity extends AppCompatActivity {
         }
 
         // Show intro if the user hasn't seen it yet
-        startIntro(null);
+        if(!ConfigurationFile.getValue(ConfigurationFile.INTRO).equals("yes")){
+            startIntro();
+        }
 
     }
 
-    public void startIntro(View v) {
-        Intent introIntent = new Intent(this, VibrateIntro.class);
+    public void startIntro() {
+        Intent introIntent = new Intent(this, Intro.class);
         startActivity(introIntent);
 
         // Save that the intro has been shown
-        //settingsModel.setIntroShown(true);
+        ConfigurationFile.addValue(ConfigurationFile.INTRO, "yes");
     }
 
     @Override

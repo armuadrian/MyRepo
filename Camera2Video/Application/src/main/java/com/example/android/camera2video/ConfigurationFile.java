@@ -15,6 +15,7 @@ public class ConfigurationFile {
     public static final String AUTO_START = "AUTO_START";
     public static final String FILE_SIZE = "FILE_SIZE";
     public static final String MAX_DURATION = "MAX_DURATION";
+    public static final String INTRO = "INTRO";
 
     private static Map<String, String> map = new HashMap<>();
 
@@ -38,6 +39,10 @@ public class ConfigurationFile {
         String maxDuration = settings.getString(MAX_DURATION, null);
         Log.d(TAG, "Read " + MAX_DURATION + ": " + maxDuration);
         map.put(MAX_DURATION, maxDuration);
+
+        String intro = settings.getString(INTRO, null);
+        Log.d(TAG, "Read " + INTRO + ": " + intro);
+        map.put(INTRO, intro);
     }
 
     public static void init(CameraActivity newCameraActivity) {

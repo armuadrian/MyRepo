@@ -27,7 +27,7 @@ import android.util.Log;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
-public class VibrateIntro extends AppIntro {
+public class Intro extends AppIntro {
     private Resources resources;
     private static final String TAG = "DEBUG";
     private static final boolean DEBUG = true;
