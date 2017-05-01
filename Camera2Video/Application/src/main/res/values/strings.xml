@@ -14,15 +14,16 @@
     <!-- Example General settings -->
     <string name="pref_header_general">Settings</string>
 
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
+    <string name="pref_title_social_recommendations">Auto-start recording</string>
+    <string name="pref_description_social_recommendations">Enable or disable auto-start recording
     </string>
 
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_title_file_name">Video file name</string>
+    <string name="pref_default_file_name">CarId</string>
+    <string name="pref_description_file_name">Personalize video file names (recommanded your car id)</string>
 
-    <string name="pref_title_add_friends_to_messages">Video size</string>
+    <string name="pref_title_video_size">Maximum videos size</string>
+    <string name="pref_title_video_lenght">Video lenght</string>
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>
@@ -55,21 +56,33 @@
         <item>-1</item>
     </string-array>
 
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
+    <string-array name="list_preference_entries_values_file_size">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
 
+    <string-array name="list_preference_entries_file_size">
+        <item>1 GB</item>
+        <item>2 GB</item>
+        <item>3 GB</item>
+    </string-array>
+
+    <string-array name="list_preference_entries_values_max_duration">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="list_preference_entries_max_duration">
+        <item>5 MIN</item>
+        <item>10 MIN</item>
+        <item>15 MIN</item>
+    </string-array>
+
     <string-array name="multi_select_list_preference_default_value" />
 
-    <string name="pref_title_system_sync_settings">System sync settings</string>
+    <string name="pref_title_system_sync_settings">About</string>
 
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>

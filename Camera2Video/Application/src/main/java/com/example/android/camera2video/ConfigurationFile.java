@@ -10,11 +10,14 @@ import java.util.Map;
 public class ConfigurationFile {
 
     private static final String TAG = "DEBUG";
+    private static final String PREFS_NAME = "preferences";
+    public static final String FILE_NAME = "FILE_NAME";
+    public static final String AUTO_START = "AUTO_START";
+    public static final String FILE_SIZE = "FILE_SIZE";
+    public static final String MAX_DURATION = "MAX_DURATION";
+
     private static Map<String, String> map = new HashMap<>();
 
-    public static final String AUTO_START = "AUTO_START";
-
-    private static final String PREFS_NAME = "preferences";
     private static SharedPreferences settings;
     private static CameraActivity cameraActivity;
 
@@ -23,6 +26,18 @@ public class ConfigurationFile {
         String autoStart = settings.getString(AUTO_START, null);
         Log.d(TAG, "Read " + AUTO_START + ": " + autoStart);
         map.put(AUTO_START, autoStart);
+
+        String fileName = settings.getString(FILE_NAME, null);
+        Log.d(TAG, "Read " + FILE_NAME + ": " + fileName);
+        map.put(FILE_NAME, fileName);
+
+        String fileSize = settings.getString(FILE_SIZE, null);
+        Log.d(TAG, "Read " + FILE_SIZE + ": " + fileSize);
+        map.put(FILE_SIZE, fileSize);
+
+        String maxDuration = settings.getString(MAX_DURATION, null);
+        Log.d(TAG, "Read " + MAX_DURATION + ": " + maxDuration);
+        map.put(MAX_DURATION, maxDuration);
     }
 
     public static void init(CameraActivity newCameraActivity) {
@@ -34,6 +49,7 @@ public class ConfigurationFile {
     }
 
     public static void addValue(String key, String value){
+        Log.d(TAG, "Write " + key + ": " + value);
         map.put(key, value);
     }
 

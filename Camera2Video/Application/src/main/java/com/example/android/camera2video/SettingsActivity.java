@@ -131,8 +131,10 @@ public class SettingsActivity extends PreferenceActivity {
     protected void onDestroy() {
         super.onDestroy();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String syncConnPref = sharedPref.getString("example_text", "");
-        ConfigurationFile.addValue(ConfigurationFile.AUTO_START, sharedPref.getBoolean("example_switch", false) + "");
+        ConfigurationFile.addValue(ConfigurationFile.AUTO_START, sharedPref.getBoolean("auto_start", false) + "");
+        ConfigurationFile.addValue(ConfigurationFile.FILE_NAME, sharedPref.getString("file_name", R.string.pref_default_file_name + ""));
+        ConfigurationFile.addValue(ConfigurationFile.FILE_SIZE, sharedPref.getString("file_size", "1 GB"));
+        ConfigurationFile.addValue(ConfigurationFile.MAX_DURATION, sharedPref.getString("max_duration", "5 MIN"));
     }
 
     /**
@@ -170,8 +172,7 @@ public class SettingsActivity extends PreferenceActivity {
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
-                || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
-                || NotificationPreferenceFragment.class.getName().equals(fragmentName);
+                || DataSyncPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -192,8 +193,9 @@ public class SettingsActivity extends PreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("example_text"));
-            bindPreferenceSummaryToValue(findPreference("example_list"));
+            bindPreferenceSummaryToValue(findPreference("file_name"));
+            bindPreferenceSummaryToValue(findPreference("file_size"));
+            bindPreferenceSummaryToValue(findPreference("max_duration"));
         }
 
         @Override
@@ -216,36 +218,36 @@ public class SettingsActivity extends PreferenceActivity {
         }
     }
 
-    /**
-     * This fragment shows notification preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class NotificationPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_notification);
-            setHasOptionsMenu(true);
-
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
-
-            if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
-    }
+//    /**
+//     * This fragment shows notification preferences only. It is used when the
+//     * activity is showing a two-pane settings UI.
+//     */
+//    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+//    public static class NotificationPreferenceFragment extends PreferenceFragment {
+//        @Override
+//        public void onCreate(Bundle savedInstanceState) {
+//            super.onCreate(savedInstanceState);
+//            addPreferencesFromResource(R.xml.pref_notification);
+//            setHasOptionsMenu(true);
+//
+//            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+//            // to their values. When their values change, their summaries are
+//            // updated to reflect the new value, per the Android Design
+//            // guidelines.
+//            bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+//        }
+//
+//        @Override
+//        public boolean onOptionsItemSelected(MenuItem item) {
+//            int id = item.getItemId();
+//
+//            if (id == android.R.id.home) {
+//                startActivity(new Intent(getActivity(), SettingsActivity.class));
+//                return true;
+//            }
+//            return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     /**
      * This fragment shows data and sync preferences only. It is used when the
@@ -263,7 +265,7 @@ public class SettingsActivity extends PreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+            //bindPreferenceSummaryToValue(findPreference("sync_frequency"));
         }
 
         @Override

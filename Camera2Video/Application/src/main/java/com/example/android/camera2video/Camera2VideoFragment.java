@@ -26,7 +26,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -42,6 +46,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v13.app.FragmentCompat;
@@ -58,6 +63,14 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 import java.io.IOException;
@@ -133,7 +146,42 @@ public class Camera2VideoFragment extends Fragment
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture,
                                               int width, int height) {
+
+//            MyClass th = new MyClass(surfaceTexture, width, height);
+//            th.run();
+
             openCamera(width, height);
+
+        }
+
+        class MyClass extends Thread{
+            SurfaceTexture surfaceTexture;
+            int width;
+            int height;
+            public MyClass(SurfaceTexture surfaceTexture,
+                           int width, int height){
+                this.surfaceTexture = surfaceTexture;
+                this.width = width;
+                this.height = height;
+            }
+
+            @Override
+            public void run(){
+                Rect rect = new Rect(0, height * 3 / 8, width, height * 5 / 8);
+                Surface surface = new Surface(surfaceTexture);
+                while (true){
+                    try{
+                        Canvas canvas = surface.lockCanvas(rect);
+                        canvas.drawRGB(0, 0, 0);
+                        surface.unlockCanvasAndPost(canvas);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }finally {
+                        surface.release();
+                    }
+                }
+
+            }
         }
 
         @Override
@@ -221,18 +269,12 @@ public class Camera2VideoFragment extends Fragment
             cameraDevice.close();
             mCameraDevice = null;
             Activity activity = getActivity();
-            if (null != activity) {
-                // activity.recreate();
-            }
 
             if (mTextureView.isAvailable()) {
                 openCamera(mTextureView.getWidth(), mTextureView.getHeight());
             } else {
                 mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
             }
-
-//            mCameraDevice = cameraDevice;
-//            startPreview();
         }
 
     };
@@ -240,6 +282,7 @@ public class Camera2VideoFragment extends Fragment
     private String mNextVideoAbsolutePath;
     private CaptureRequest.Builder mPreviewBuilder;
     private Surface mRecorderSurface;
+    private TextView recordingTime;
 
     public static Camera2VideoFragment newInstance() {
         return new Camera2VideoFragment();
@@ -294,35 +337,271 @@ public class Camera2VideoFragment extends Fragment
         }
     }
 
+    MapView mapView;
+    GoogleMap map;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_camera2_video, container, false);
     }
 
+    private long startHTime = 0L;
+    private Handler customHandler = new Handler();
+    long timeInMilliseconds = 0L;
+    long timeSwapBuff = 0L;
+    long updatedTime = 0L;
+
+    private Runnable updateTimerThread = new Runnable() {
+
+        public void run() {
+
+            timeInMilliseconds = SystemClock.uptimeMillis() - startHTime;
+
+            updatedTime = timeSwapBuff + timeInMilliseconds;
+
+            int secs = (int) (updatedTime / 1000);
+            int mins = secs / 60;
+            secs = secs % 60;
+            if (recordingTime != null)
+                recordingTime.setText("" + String.format("%02d", mins) + ":"
+                        + String.format("%02d", secs));
+            customHandler.postDelayed(this, 0);
+        }
+
+    };
+    private Renderer mRenderer;
+
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+
+        // Start up the Renderer thread.  It'll sleep until the TextureView is ready.
+
+
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
         mButtonVideo = (FloatingActionButton) view.findViewById(R.id.video);
         status = (TextView) view.findViewById(R.id.statusMsg);
+        recordingTime = (TextView) view.findViewById(R.id.recordingTime);
         status.setText(R.string.standby);
         mButtonVideo.setOnClickListener(this);
 
+        mRenderer = new Renderer();
+        mRenderer.start();
 
-        //view.findViewById(R.id.info).setOnClickListener(this);
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy");
+        super.onDestroy();
+        // Don't do this -- halt the thread in onPause() and wait for it to finish.
+        mRenderer.halt();
+    }
+
+
+    /**
+     * Handles Canvas rendering and SurfaceTexture callbacks.
+     * <p>
+     * We don't create a Looper, so the SurfaceTexture-by-way-of-TextureView callbacks
+     * happen on the UI thread.
+     */
+    private class Renderer extends Thread implements TextureView.SurfaceTextureListener {
+        private Object mLock = new Object();        // guards mSurfaceTexture, mDone
+        private SurfaceTexture mSurfaceTexture;
+        private boolean mDone;
+
+        private int mWidth;     // from SurfaceTexture
+        private int mHeight;
+
+        public Renderer() {
+            super("TextureViewCanvas Renderer");
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                SurfaceTexture surfaceTexture = null;
+
+               //  Latch the SurfaceTexture when it becomes available.  We have to wait for
+               //  the TextureView to create it.
+                synchronized (mLock) {
+                    while (!mDone && (surfaceTexture = mSurfaceTexture) == null) {
+                        try {
+                            mLock.wait();
+                        } catch (InterruptedException ie) {
+                            throw new RuntimeException(ie);     // not expected
+                        }
+                    }
+                    if (mDone) {
+                        break;
+                    }
+                }
+                Log.d(TAG, "Got surfaceTexture=" + surfaceTexture);
+
+                // Render frames until we're told to stop or the SurfaceTexture is destroyed.
+                doAnimation();
+            }
+
+          //  Log.d(TAG, "Renderer thread exiting");
+        }
+
+        /**
+         * Draws updates as fast as the system will allow.
+         * <p>
+         * In 4.4, with the synchronous buffer queue queue, the frame rate will be limited.
+         * In previous (and future) releases, with the async queue, many of the frames we
+         * render may be dropped.
+         * <p>
+         * The correct thing to do here is use Choreographer to schedule frame updates off
+         * of vsync, but that's not nearly as much fun.
+         */
+        private void doAnimation() {
+            final int BLOCK_WIDTH = 80;
+            final int BLOCK_SPEED = 2;
+            int clearColor = 0;
+            int xpos = -BLOCK_WIDTH / 2;
+            int xdir = BLOCK_SPEED;
+
+            // Create a Surface for the SurfaceTexture.
+            Surface surface = null;
+            synchronized (mLock) {
+                SurfaceTexture surfaceTexture = mSurfaceTexture;
+                if (surfaceTexture == null) {
+                    Log.d(TAG, "ST null on entry");
+                    return;
+                }
+                surface = new Surface(surfaceTexture);
+            }
+
+            Paint paint = new Paint();
+            paint.setColor(Color.RED);
+            paint.setStyle(Paint.Style.FILL);
+
+            boolean partial = false;
+            while (true) {
+                Rect dirty = null;
+                if (partial) {
+                    // Set a dirty rect to confirm that the feature is working.  It's
+                    // possible for lockCanvas() to expand the dirty rect if for some
+                    // reason the system doesn't have access to the previous buffer.
+                    dirty = new Rect(0, mHeight * 3 / 8, mWidth, mHeight * 5 / 8);
+                }
+                Canvas canvas = surface.lockCanvas(dirty);
+                if (canvas == null) {
+                    Log.d(TAG, "lockCanvas() failed");
+                    break;
+                }
+                try {
+                    // just curious
+                    if (canvas.getWidth() != mWidth || canvas.getHeight() != mHeight) {
+                        Log.d(TAG, "WEIRD: width/height mismatch");
+                    }
+
+                    // Draw the entire window.  If the dirty rect is set we should actually
+                    // just be drawing into the area covered by it -- the system lets us draw
+                    // whatever we want, then overwrites the areas outside the dirty rect with
+                    // the previous contents.  So we've got a lot of overdraw here.
+                    canvas.drawRGB(clearColor, clearColor, clearColor);
+                    canvas.drawRect(xpos, mHeight / 4, xpos + BLOCK_WIDTH, mHeight * 3 / 4, paint);
+                } finally {
+                    // Publish the frame.  If we overrun the consumer, frames will be dropped,
+                    // so on a sufficiently fast device the animation will run at faster than
+                    // the display refresh rate.
+                    //
+                    // If the SurfaceTexture has been destroyed, this will throw an exception.
+                    try {
+                        surface.unlockCanvasAndPost(canvas);
+                    } catch (IllegalArgumentException iae) {
+                        Log.d(TAG, "unlockCanvasAndPost failed: " + iae.getMessage());
+                        break;
+                    }
+                }
+
+                // Advance state
+                clearColor += 4;
+                if (clearColor > 255) {
+                    clearColor = 0;
+                    partial = !partial;
+                }
+                xpos += xdir;
+                if (xpos <= -BLOCK_WIDTH / 2 || xpos >= mWidth - BLOCK_WIDTH / 2) {
+                    Log.d(TAG, "change direction");
+                    xdir = -xdir;
+                }
+            }
+
+            surface.release();
+        }
+
+        /**
+         * Tells the thread to stop running.
+         */
+        public void halt() {
+            synchronized (mLock) {
+                mDone = true;
+                mLock.notify();
+            }
+        }
+
+        @Override   // will be called on UI thread
+        public void onSurfaceTextureAvailable(SurfaceTexture st, int width, int height) {
+            Log.d(TAG, "onSurfaceTextureAvailable(" + width + "x" + height + ")");
+            mWidth = width;
+            mHeight = height;
+            synchronized (mLock) {
+                mSurfaceTexture = st;
+                mLock.notify();
+            }
+
+            openCamera(width, height);
+        }
+
+        @Override   // will be called on UI thread
+        public void onSurfaceTextureSizeChanged(SurfaceTexture st, int width, int height) {
+            Log.d(TAG, "onSurfaceTextureSizeChanged(" + width + "x" + height + ")");
+            mWidth = width;
+            mHeight = height;
+
+            configureTransform(width, height);
+        }
+
+        @Override   // will be called on UI thread
+        public boolean onSurfaceTextureDestroyed(SurfaceTexture st) {
+            Log.d(TAG, "onSurfaceTextureDestroyed");
+
+            synchronized (mLock) {
+                mSurfaceTexture = null;
+            }
+            return true;
+        }
+
+        @Override   // will be called on UI thread
+        public void onSurfaceTextureUpdated(SurfaceTexture st) {
+            //Log.d(TAG, "onSurfaceTextureUpdated");
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         startBackgroundThread();
-//        String pref = ConfigurationFile.readConfig("example_switch");
-//        Log.d(TAG, "Pref " + pref);
         if (mTextureView.isAvailable()) {
             openCamera(mTextureView.getWidth(), mTextureView.getHeight());
+
+
+
         } else {
+           // mTextureView.setSurfaceTextureListener(mRenderer);
             mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
         }
+
+//        if(ConfigurationFile.getValue(ConfigurationFile.AUTO_START).equals("true") && firstRecord){
+//            mIsRecordingVideo = true;
+//            startRecordingVideo();
+//        }
+
     }
 
     @Override
@@ -441,7 +720,7 @@ public class Camera2VideoFragment extends Fragment
     /**
      * Tries to open a {@link CameraDevice}. The result is listened by `mStateCallback`.
      */
-    private void openCamera(int width, int height) {
+    private void  openCamera(int width, int height) {
         if (!hasPermissionsGranted(VIDEO_PERMISSIONS)) {
             requestVideoPermissions();
             return;
@@ -465,8 +744,10 @@ public class Camera2VideoFragment extends Fragment
                     .get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             mSensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
             mVideoSize = chooseVideoSize(map.getOutputSizes(MediaRecorder.class));
-            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class),
-                    width, height, mVideoSize);
+            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), width, height, mVideoSize);
+
+            //mVideoSize = new Size(width, height);
+           // mPreviewSize = new Size(width, height);
 
             int orientation = getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -475,6 +756,8 @@ public class Camera2VideoFragment extends Fragment
                 mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
             }
             configureTransform(width, height);
+
+
             mMediaRecorder = new MediaRecorder();
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
@@ -532,8 +815,9 @@ public class Camera2VideoFragment extends Fragment
             assert texture != null;
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             mPreviewBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-
             Surface previewSurface = new Surface(texture);
+
+
             mPreviewBuilder.addTarget(previewSurface);
 
             mCameraDevice.createCaptureSession(Arrays.asList(previewSurface), new CameraCaptureSession.StateCallback() {
@@ -552,9 +836,13 @@ public class Camera2VideoFragment extends Fragment
                     }
                 }
             }, mBackgroundHandler);
+
+
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+
+
     }
 
     /**
@@ -607,6 +895,7 @@ public class Camera2VideoFragment extends Fragment
             matrix.postRotate(90 * (rotation - 2), centerX, centerY);
         }
         mTextureView.setTransform(matrix);
+
     }
 
     private void setUpMediaRecorder() throws IOException {
@@ -624,6 +913,19 @@ public class Camera2VideoFragment extends Fragment
         mMediaRecorder.setVideoEncodingBitRate(10000000);
         mMediaRecorder.setVideoFrameRate(30);
         mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
+        String value = ConfigurationFile.getValue(ConfigurationFile.MAX_DURATION);
+        switch (value){
+            case "1": {
+                mMediaRecorder.setMaxDuration(1000 * 5);
+            }break;
+            case "2": {
+                mMediaRecorder.setMaxDuration(1000 * 60 * 10);
+            }break;
+            case "3": {
+                mMediaRecorder.setMaxDuration(1000 * 60 * 15);
+            }break;
+            default: mMediaRecorder.setMaxDuration(1000 * 5);
+        }
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
@@ -635,6 +937,17 @@ public class Camera2VideoFragment extends Fragment
                 mMediaRecorder.setOrientationHint(INVERSE_ORIENTATIONS.get(rotation));
                 break;
         }
+        mMediaRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
+            @Override
+            public void onInfo(MediaRecorder mr, int what, int extra) {
+                switch (what){
+                    case MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED:{
+                        stopRecordingVideo();
+                    }break;
+                }
+            }
+        });
+
         mMediaRecorder.prepare();
     }
 
@@ -648,11 +961,38 @@ public class Camera2VideoFragment extends Fragment
 //            Log.d(TAG, "Directory not created");
 //        }
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/MyApp/"
-                + System.currentTimeMillis() + ".mp4";
+                + ConfigurationFile.getValue(ConfigurationFile.FILE_NAME) + "_" + System.currentTimeMillis() + ".mp4";
         Log.d(TAG, path);
 
         return path;
     }
+
+    Thread timeThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            int sec = 0;
+            int min = 0;
+            while(true){
+                recordingTime.setText("00:00");
+
+                sec++;
+
+                if(sec == 60){
+                    min ++;
+                }
+                if(min > 9){
+                    recordingTime.setText("0" + min + ":" + sec);
+                }else{
+                    recordingTime.setText(min + ":" + sec);
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    });
 
     private void startRecordingVideo() {
         if (null == mCameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
@@ -694,6 +1034,11 @@ public class Camera2VideoFragment extends Fragment
 
                             // Start recording
                             mMediaRecorder.start();
+                            startHTime = SystemClock.uptimeMillis();
+                            customHandler.postDelayed(updateTimerThread, 0);
+
+                            //timeThread.start();
+
                         }
                     });
                 }
@@ -732,7 +1077,9 @@ public class Camera2VideoFragment extends Fragment
         // Stop recording
         mMediaRecorder.stop();
         mMediaRecorder.reset();
-
+        timeSwapBuff += timeInMilliseconds;
+        customHandler.removeCallbacks(updateTimerThread);
+        recordingTime.setText("00:00");
 
         Activity activity = getActivity();
         if (null != activity) {
