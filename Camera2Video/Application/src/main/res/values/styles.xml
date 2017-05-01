@@ -20,4 +20,13 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="AppThemeNoActionBar"
+        parent="Theme.AppCompat.Light.NoActionBar"
+        xmlns:tools="http://schemas.android.com/tools" >
+        <!-- Translucent status bar is only available in API 19+ -->
+        <item
+            tools:targetApi="19"
+            name="android:windowTranslucentStatus">true</item>
+    </style>
 </resources>

@@ -93,4 +93,14 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
+    <string name="vibrate_intro_label">Intro</string>
+
+    <!-- Intro -->
+    <string name="intro_slide_1_title">Welcome to Vibrate!</string>
+    <string name="intro_slide_1_text">In the past, many homes had a
+  chiming or cuckoo\'s clock that would ring every hour or half
+  hour. However, with the current technology you don\'t need to bother
+  everyone with a loud nose, Vibrate can just vibrate your phone for
+  you!</string>
 </resources>

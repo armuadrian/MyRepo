@@ -27,6 +27,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -57,6 +58,18 @@ public class CameraActivity extends AppCompatActivity {
                     .replace(R.id.camera_preview, Camera2VideoFragment.newInstance())
                     .commit();
         }
+
+        // Show intro if the user hasn't seen it yet
+        startIntro(null);
+
+    }
+
+    public void startIntro(View v) {
+        Intent introIntent = new Intent(this, VibrateIntro.class);
+        startActivity(introIntent);
+
+        // Save that the intro has been shown
+        //settingsModel.setIntroShown(true);
     }
 
     @Override
