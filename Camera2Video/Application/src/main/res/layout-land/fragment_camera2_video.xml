@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|bottom"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@android:drawable/ic_dialog_email"/>
+            app:backgroundTint="@color/green" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/menu"
@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
             android:layout_margin="@dimen/fab_margin"
+            app:backgroundTint="@android:color/holo_orange_dark"
             app:srcCompat="@android:drawable/ic_menu_manage" />
 
         <TextView
@@ -49,7 +50,7 @@
             android:textColor="@color/cardview_light_background"
             android:paddingTop="10dp"
             android:paddingLeft="10dp"
-            android:text="Recording Status :"
+            android:text="Status :"
             android:visibility="visible" />
 
         <TextView

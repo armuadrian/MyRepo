@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -1038,6 +1039,7 @@ public class Camera2VideoFragment extends Fragment
                             // UI
                             status.setText(R.string.recording);
                             mIsRecordingVideo = true;
+                            mButtonVideo.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
 
                             // Start recording
                             mMediaRecorder.start();
@@ -1080,6 +1082,7 @@ public class Camera2VideoFragment extends Fragment
         // UI
         mIsRecordingVideo = false;
         status.setText(R.string.standby);
+        mButtonVideo.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
         // Stop recording
         mMediaRecorder.stop();
         mMediaRecorder.reset();
