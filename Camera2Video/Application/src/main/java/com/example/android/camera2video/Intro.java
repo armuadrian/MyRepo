@@ -78,9 +78,5 @@ public class Intro extends AppIntro {
         // Do something when the slide changes.
     }
 
-    @Override
-    public void onNextPressed() {
-        // Do something when users tap on Next button.
-    }
 
 }
