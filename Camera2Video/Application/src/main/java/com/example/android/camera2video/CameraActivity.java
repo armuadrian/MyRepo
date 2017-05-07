@@ -61,7 +61,7 @@ public class CameraActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //ConfigurationFile.init(this);
+        ConfigurationFile.init(this);
 
         setContentView(R.layout.activity_camera);
 

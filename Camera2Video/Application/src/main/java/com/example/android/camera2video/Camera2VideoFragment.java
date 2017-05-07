@@ -238,20 +238,24 @@ public class Camera2VideoFragment extends Fragment
 
         @Override
         public void onOpened(CameraDevice cameraDevice) {
-            mCameraDevice = cameraDevice;
-            startPreview();
-            mCameraOpenCloseLock.release();
-            if (null != mTextureView) {
-                configureTransform(mTextureView.getWidth(), mTextureView.getHeight());
-            }
             try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
+                mCameraDevice = cameraDevice;
+                startPreview();
+                mCameraOpenCloseLock.release();
+                if (null != mTextureView) {
+                    configureTransform(mTextureView.getWidth(), mTextureView.getHeight());
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (ConfigurationFile.getValue(ConfigurationFile.AUTO_START).equals("true") && firstRecord) {
+                    mIsRecordingVideo = true;
+                    startRecordingVideo();
+                }
+            }catch(Exception e){
                 e.printStackTrace();
-            }
-            if(ConfigurationFile.getValue(ConfigurationFile.AUTO_START).equals("true") && firstRecord){
-                mIsRecordingVideo = true;
-                startRecordingVideo();
             }
         }
 
@@ -601,9 +605,13 @@ public class Camera2VideoFragment extends Fragment
 
     @Override
     public void onPause() {
-        closeCamera();
-        stopBackgroundThread();
-        super.onPause();
+        try {
+            closeCamera();
+            stopBackgroundThread();
+            super.onPause();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
