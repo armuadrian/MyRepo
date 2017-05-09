@@ -38,7 +38,7 @@ public class Intro extends AppIntro {
         addSlide(AppIntroFragment.newInstance
                  (resources.getString(R.string.intro_slide_1_title),
                   resources.getString(R.string.intro_slide_1_text),
-                  R.drawable.intro_slide_1,
+                  R.drawable.ic_launcher,
                   0xFF3f51b5));
 //        addSlide(AppIntroFragment.newInstance
 //                 (resources.getString(R.string.intro_slide_2_title),

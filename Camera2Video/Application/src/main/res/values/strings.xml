@@ -102,10 +102,6 @@
     <string name="permission_required_toast">Location permission is required for this demo.</string>
 
     <!-- Intro -->
-    <string name="intro_slide_1_title">Welcome to Vibrate!</string>
-    <string name="intro_slide_1_text">In the past, many homes had a
-  chiming or cuckoo\'s clock that would ring every hour or half
-  hour. However, with the current technology you don\'t need to bother
-  everyone with a loud nose, Vibrate can just vibrate your phone for
-  you!</string>
+    <string name="intro_slide_1_title">Welcome!</string>
+    <string name="intro_slide_1_text">Description here!</string>
 </resources>
