@@ -1,19 +1,3 @@
-/*
- * Copyright 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.example.android.camera2video;
 
 import android.Manifest;
@@ -108,45 +92,23 @@ public class Camera2VideoFragment extends Fragment
         INVERSE_ORIENTATIONS.append(Surface.ROTATION_270, 0);
     }
 
-    /**
-     * An {@link AutoFitTextureView} for camera preview.
-     */
     private AutoFitTextureView mTextureView;
 
-    /**
-     * Button to record video
-     */
     private FloatingActionButton mButtonVideo;
     private FloatingActionButton menuButton;
     private TextView status;
 
-    /**
-     * A refernce to the opened {@link android.hardware.camera2.CameraDevice}.
-     */
     private CameraDevice mCameraDevice;
 
-    /**
-     * A reference to the current {@link android.hardware.camera2.CameraCaptureSession} for
-     * preview.
-     */
     private CameraCaptureSession mPreviewSession;
 
-    /**
-     * {@link TextureView.SurfaceTextureListener} handles several lifecycle events on a
-     * {@link TextureView}.
-     */
     private TextureView.SurfaceTextureListener mSurfaceTextureListener
             = new TextureView.SurfaceTextureListener() {
 
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture,
                                               int width, int height) {
-
-//            MyClass th = new MyClass(surfaceTexture, width, height);
-//            th.run();
-
             openCamera(width, height);
-
         }
 
         class MyClass extends Thread{
@@ -196,44 +158,20 @@ public class Camera2VideoFragment extends Fragment
 
     };
 
-    /**
-     * The {@link android.util.Size} of camera preview.
-     */
     private Size mPreviewSize;
 
-    /**
-     * The {@link android.util.Size} of video recording.
-     */
     private Size mVideoSize;
 
-    /**
-     * MediaRecorder
-     */
     private MediaRecorder mMediaRecorder = new MediaRecorder();
 
-    /**
-     * Whether the app is recording video now
-     */
     private boolean mIsRecordingVideo;
 
-    /**
-     * An additional thread for running tasks that shouldn't block the UI.
-     */
     private HandlerThread mBackgroundThread;
 
-    /**
-     * A {@link Handler} for running tasks in the background.
-     */
     private Handler mBackgroundHandler;
 
-    /**
-     * A {@link Semaphore} to prevent the app from exiting before closing the camera.
-     */
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
 
-    /**
-     * {@link CameraDevice.StateCallback} is called when {@link CameraDevice} changes its status.
-     */
     private CameraDevice.StateCallback mStateCallback = new CameraDevice.StateCallback() {
 
         @Override
@@ -292,13 +230,6 @@ public class Camera2VideoFragment extends Fragment
         return new Camera2VideoFragment();
     }
 
-    /**
-     * In this sample, we choose a video size with 3x4 aspect ratio. Also, we don't use sizes
-     * larger than 1080p, since MediaRecorder cannot handle such a high-resolution video.
-     *
-     * @param choices The list of available sizes
-     * @return The video size
-     */
     private static Size chooseVideoSize(Size[] choices) {
         for (Size size : choices) {
             if (size.getWidth() == size.getHeight() * 4 / 3 && size.getWidth() <= 1080) {
@@ -309,17 +240,6 @@ public class Camera2VideoFragment extends Fragment
         return choices[choices.length - 1];
     }
 
-    /**
-     * Given {@code choices} of {@code Size}s supported by a camera, chooses the smallest one whose
-     * width and height are at least as large as the respective requested values, and whose aspect
-     * ratio matches with the specified value.
-     *
-     * @param choices     The list of sizes that the camera supports for the intended output class
-     * @param width       The minimum desired width
-     * @param height      The minimum desired height
-     * @param aspectRatio The aspect ratio
-     * @return The optimal {@code Size}, or an arbitrary one if none were big enough
-     */
     private static Size chooseOptimalSize(Size[] choices, int width, int height, Size aspectRatio) {
         // Collect the supported resolutions that are at least as big as the preview Surface
         List<Size> bigEnough = new ArrayList<Size>();
@@ -389,32 +309,21 @@ public class Camera2VideoFragment extends Fragment
         menuButton.setOnClickListener(this);
         mRenderer = new Renderer();
         mRenderer.start();
-
-
-
     }
 
     @Override
     public void onDestroy() {
         Log.d(TAG, "onDestroy");
         super.onDestroy();
-        // Don't do this -- halt the thread in onPause() and wait for it to finish.
         mRenderer.halt();
     }
 
-
-    /**
-     * Handles Canvas rendering and SurfaceTexture callbacks.
-     * <p>
-     * We don't create a Looper, so the SurfaceTexture-by-way-of-TextureView callbacks
-     * happen on the UI thread.
-     */
     private class Renderer extends Thread implements TextureView.SurfaceTextureListener {
-        private Object mLock = new Object();        // guards mSurfaceTexture, mDone
+        private Object mLock = new Object();
         private SurfaceTexture mSurfaceTexture;
         private boolean mDone;
 
-        private int mWidth;     // from SurfaceTexture
+        private int mWidth;
         private int mHeight;
 
         public Renderer() {
@@ -426,8 +335,6 @@ public class Camera2VideoFragment extends Fragment
             while (true) {
                 SurfaceTexture surfaceTexture = null;
 
-               //  Latch the SurfaceTexture when it becomes available.  We have to wait for
-               //  the TextureView to create it.
                 synchronized (mLock) {
                     while (!mDone && (surfaceTexture = mSurfaceTexture) == null) {
                         try {
@@ -442,23 +349,11 @@ public class Camera2VideoFragment extends Fragment
                 }
                 Log.d(TAG, "Got surfaceTexture=" + surfaceTexture);
 
-                // Render frames until we're told to stop or the SurfaceTexture is destroyed.
                 doAnimation();
             }
 
-          //  Log.d(TAG, "Renderer thread exiting");
         }
 
-        /**
-         * Draws updates as fast as the system will allow.
-         * <p>
-         * In 4.4, with the synchronous buffer queue queue, the frame rate will be limited.
-         * In previous (and future) releases, with the async queue, many of the frames we
-         * render may be dropped.
-         * <p>
-         * The correct thing to do here is use Choreographer to schedule frame updates off
-         * of vsync, but that's not nearly as much fun.
-         */
         private void doAnimation() {
             final int BLOCK_WIDTH = 80;
             final int BLOCK_SPEED = 2;
@@ -485,9 +380,6 @@ public class Camera2VideoFragment extends Fragment
             while (true) {
                 Rect dirty = null;
                 if (partial) {
-                    // Set a dirty rect to confirm that the feature is working.  It's
-                    // possible for lockCanvas() to expand the dirty rect if for some
-                    // reason the system doesn't have access to the previous buffer.
                     dirty = new Rect(0, mHeight * 3 / 8, mWidth, mHeight * 5 / 8);
                 }
                 Canvas canvas = surface.lockCanvas(dirty);
@@ -501,18 +393,10 @@ public class Camera2VideoFragment extends Fragment
                         Log.d(TAG, "WEIRD: width/height mismatch");
                     }
 
-                    // Draw the entire window.  If the dirty rect is set we should actually
-                    // just be drawing into the area covered by it -- the system lets us draw
-                    // whatever we want, then overwrites the areas outside the dirty rect with
-                    // the previous contents.  So we've got a lot of overdraw here.
                     canvas.drawRGB(clearColor, clearColor, clearColor);
                     canvas.drawRect(xpos, mHeight / 4, xpos + BLOCK_WIDTH, mHeight * 3 / 4, paint);
                 } finally {
-                    // Publish the frame.  If we overrun the consumer, frames will be dropped,
-                    // so on a sufficiently fast device the animation will run at faster than
-                    // the display refresh rate.
-                    //
-                    // If the SurfaceTexture has been destroyed, this will throw an exception.
+
                     try {
                         surface.unlockCanvasAndPost(canvas);
                     } catch (IllegalArgumentException iae) {
@@ -595,12 +479,6 @@ public class Camera2VideoFragment extends Fragment
            // mTextureView.setSurfaceTextureListener(mRenderer);
             mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
         }
-
-//        if(ConfigurationFile.getValue(ConfigurationFile.AUTO_START).equals("true") && firstRecord){
-//            mIsRecordingVideo = true;
-//            startRecordingVideo();
-//        }
-
     }
 
     @Override

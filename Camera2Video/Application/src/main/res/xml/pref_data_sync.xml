@@ -13,13 +13,13 @@
         <!--android:title="@string/pref_title_sync_frequency" />-->
 
     <Preference android:title="Intro">
-        <intent android:action="android.settings.SYNC_SETTINGS" />
+        <intent android:action="android.intent.action.INTRO"/>
     </Preference>
 
     <!-- This preference simply launches an intent when selected. Use this UI sparingly, per
          design guidelines. -->
     <Preference android:title="@string/pref_title_system_sync_settings">
-        <intent android:action="android.intent.action.INTRO"/>
+
     </Preference>
 
 </PreferenceScreen>

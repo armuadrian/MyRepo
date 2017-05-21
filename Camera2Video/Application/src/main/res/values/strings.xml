@@ -92,7 +92,7 @@
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
 
-    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="pref_title_vibrate">Car Recorder</string>
 
     <string name="vibrate_intro_label">Intro</string>
 
@@ -102,6 +102,18 @@
     <string name="permission_required_toast">Location permission is required for this demo.</string>
 
     <!-- Intro -->
-    <string name="intro_slide_1_title">Welcome!</string>
-    <string name="intro_slide_1_text">Description here!</string>
+    <string name="intro_slide_1_title">Welcome to Car Recorder</string>
+    <string name="intro_slide_1_text">Discover new roads!</string>
+
+    <string name="intro_slide_2_title">Map</string>
+    <string name="intro_slide_2_text">Check the traffic status!</string>
+
+    <string name="intro_slide_3_title">Recording status</string>
+    <string name="intro_slide_3_text">You can see any time if you are recording your trip!</string>
+
+    <string name="intro_slide_4_title">Menu</string>
+    <string name="intro_slide_4_text">Make your own settings!</string>
+
+    <string name="intro_slide_5_title">Start or stop</string>
+    <string name="intro_slide_5_text">Pressing the button you can start or stop the recording!</string>
 </resources>
